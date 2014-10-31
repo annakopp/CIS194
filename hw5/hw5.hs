@@ -20,16 +20,23 @@ maybeEval (Just t) = Just (eval t)
 maybeEval Nothing = Nothing
 
 class Expr a where
-  lit :: b -> a
+  lit :: Integer -> a
   mul :: a -> a -> a
   add :: a -> a -> a
 
-{- instance Expr ExprT where -}
-  {- lit x = eval x -}
-  {- mul = Mul -}
-  {- add = Add -}
+instance Expr ExprT where
+  lit = Lit
+  mul = Mul
+  add = Add
 
 instance Expr Integer where
-  lit k = k
-  mul x y = x * y
-  add x y = x + y
+  lit x = x
+  mul = (*)
+  add = (+)
+  
+instance Expr Bool where
+  lit x
+    | x <= 0 = False
+    | otherwise = True
+  mul = (&&)
+  add = (||)
